@@ -10,6 +10,7 @@ import Loading from './../components/common/Loading';
 
 import { getCatalogPageData } from '../services/operations/pageAndComponentData'
 import { fetchCourseCategories } from './../services/operations/courseDetailsAPI';
+import { normalizeCategorySlug } from "../utils/catalogSlug";
 
 
 
@@ -27,10 +28,10 @@ function Catalog() {
         ; (async () => {
             try {
                 const res = await fetchCourseCategories();
-                const category_id = res.filter(
-                    (ct) => ct.name.split(" ").join("-").toLowerCase() === catalogName
-                )[0]._id
-                setCategoryId(category_id)
+                const category = res.find(
+                    (ct) => normalizeCategorySlug(ct.name) === normalizeCategorySlug(catalogName || "")
+                )
+                setCategoryId(category?._id || "")
             } catch (error) {
                 console.log("Could not fetch Categories.", error)
             }

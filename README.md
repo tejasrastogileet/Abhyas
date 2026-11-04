@@ -169,7 +169,12 @@ The seed is safe to rerun: categories, accounts, courses, course content, and re
 | --- | --- | --- |
 | Admin | `admin@abhyas.demo` | `AbhyasAdmin!2026` |
 | Instructor | `instructor@abhyas.demo` | `AbhyasInstructor!2026` |
+| Instructor | `meera.iyer@abhyas.demo` | `AbhyasMeera!2026` |
+| Instructor | `kabir.rao@abhyas.demo` | `AbhyasKabir!2026` |
+| Instructor | `anika.patel@abhyas.demo` | `AbhyasAnika!2026` |
 | Student | `student@abhyas.demo` | `AbhyasStudent!2026` |
+
+Course thumbnails are written to `frontend/public/thumbnails`. Set `FRONTEND_URL` when seeding for a different frontend host; it defaults to `https://devs-olive.vercel.app`.
 
 ## Installation and Setup
 

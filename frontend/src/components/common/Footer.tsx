@@ -5,6 +5,8 @@ import { ImGithub, ImLinkedin2 } from "react-icons/im";
 
 // Images
 import { BRAND_NAME, TAGLINE } from "../../config/brand";
+import { useCourseCategories } from "../../hooks/useCourseCategories";
+import { getCategoryHref } from "../../utils/catalogSlug";
 
 // footer data
 const BottomFooter = ["Privacy Policy", "Cookie Policy", "Terms"];
@@ -22,6 +24,8 @@ const Plans = ["Paid memberships", "For students", "Business solutions"];
 const Community = ["Forums", "Chapters", "Events"];
 
 const Footer = () => {
+  const { categories } = useCourseCategories();
+
   return (
     <div className="bg-richblack-800 mx-7 rounded-3xl mb-10">
       <div className="flex lg:flex-row gap-8 items-center justify-between w-11/12 max-w-maxContent text-richblack-400 leading-6 mx-auto relative py-14">
@@ -194,6 +198,20 @@ const Footer = () => {
 
           {/* Section 2 */}
           <div className="lg:w-[50%] flex flex-wrap flex-row justify-between pl-3 lg:pl-5 gap-3">
+            <div className="w-[35%] lg:w-[30%] mb-7">
+              <h2 className="text-richblack-50 font-semibold text-[16px]">Catalog</h2>
+              <div className="flex flex-col gap-2 mt-2">
+                {categories.map((category) => (
+                  <Link
+                    key={category._id}
+                    to={getCategoryHref(category, categories)}
+                    className="text-[14px] hover:text-richblack-50 transition-all duration-200"
+                  >
+                    {category.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
             {FooterLink2.map((ele, i) => {
               return (
                 <div key={i} className="w-[35%] lg:w-[30%] mb-7 lg:pl-0">

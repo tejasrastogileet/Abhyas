@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
 
 import HighlightText from "../components/core/HomePage/HighlightText";
 import CTAButton from "../components/core/HomePage/Button";
@@ -15,6 +14,8 @@ import Banner from "../assets/Images/banner.mp4";
 // import Course_Slider from '../components/core/Catalog/Course_Slider'
 
 import { getCatalogPageData } from "../services/operations/pageAndComponentData";
+import { fetchCourseCategories } from "../services/operations/courseDetailsAPI";
+import { normalizeCategorySlug } from "../utils/catalogSlug";
 
 import { MdOutlineRateReview } from "react-icons/md";
 import { FaArrowRight } from "react-icons/fa";
@@ -65,19 +66,25 @@ const Home = () => {
 
   // get courses data
   const [CatalogPageData, setCatalogPageData] = useState(null);
-  const categoryID = "6506c9dff191d7ffdb4a3fe2"; // hard coded
-  const dispatch = useDispatch();
 
   useEffect(() => {
+    let active = true;
     const fetchCatalogPageData = async () => {
-      const result = await getCatalogPageData(categoryID, dispatch);
-      setCatalogPageData(result);
-      // console.log("page data ==== ",CatalogPageData);
+      try {
+        const categories = await fetchCourseCategories();
+        const category = categories.find(
+          (item) => normalizeCategorySlug(item.name) === normalizeCategorySlug("Web Development")
+        ) || categories[0];
+        if (!category) return;
+        const result = await getCatalogPageData(category._id);
+        if (active) setCatalogPageData(result);
+      } catch (error) {
+        console.error("Could not load homepage courses:", error.message);
+      }
     };
-    if (categoryID) {
-      fetchCatalogPageData();
-    }
-  }, [categoryID]);
+    fetchCatalogPageData();
+    return () => { active = false; };
+  }, []);
 
   // console.log('================ CatalogPageData?.selectedCourses ================ ', CatalogPageData)
 

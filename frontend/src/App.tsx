@@ -35,7 +35,6 @@ import VideoDetails from './components/core/ViewCourse/VideoDetails';
 
 import { ACCOUNT_TYPE } from './utils/constants';
 import { HiArrowNarrowUp } from "react-icons/hi"
-import { getCatalogData } from "./data/catalogData";
 import { usePageSeo } from "./hooks/usePageSeo";
 import { BRAND_NAME, TAGLINE } from "./config/brand";
 
@@ -52,14 +51,11 @@ const App: FC = () => {
 
   // Scroll to the top of the page when the component mounts
   const location = useLocation();
-  const catalogMatch = location.pathname.match(/^\/catalog\/([^/]+)\/?$/);
-  const catalogData = catalogMatch ? getCatalogData(decodeURIComponent(catalogMatch[1])) : null;
+  const isCatalogRoute = /^\/catalog\/[^/]+\/?$/.test(location.pathname);
   const isPrivateRoute = /^\/(login|signup|forgot-password|verify-email|update-password|dashboard|view-course)(\/|$)/.test(location.pathname);
   const isCourseRoute = /^\/courses\/[^/]+\/?$/.test(location.pathname);
-  const pageSeo = catalogMatch
-    ? catalogData
-      ? { title: catalogData.pageTitle, description: catalogData.description }
-      : { title: "Page Not Found", description: "The requested course catalog could not be found.", noIndex: true }
+  const pageSeo = isCatalogRoute
+    ? { title: "Course Catalog", description: `Browse published courses on ${BRAND_NAME}.` }
     : location.pathname === "/"
       ? { title: TAGLINE, description: `Learn web development, programming, DevOps, machine learning, and more with practical online courses from ${BRAND_NAME}.` }
       : location.pathname === "/about"

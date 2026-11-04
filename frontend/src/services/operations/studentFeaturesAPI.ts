@@ -28,14 +28,6 @@ export async function buyCourse(token, coursesId, userDetails, navigate, dispatc
     const toastId = toast.loading("Loading...");
 
     try {
-        //load the script
-        const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
-
-        if (!res) {
-            toast.error("RazorPay SDK failed to load");
-            return;
-        }
-
         // initiate the order
         const orderResponse = await apiConnector("POST", COURSE_PAYMENT_API,
             { coursesId },
@@ -45,6 +37,20 @@ export async function buyCourse(token, coursesId, userDetails, navigate, dispatc
         // console.log("orderResponse... ", orderResponse);
         if (!orderResponse.data.success) {
             throw new Error(orderResponse.data.message);
+        }
+
+        if (orderResponse.data.message?.free) {
+            toast.success("Course enrolled successfully");
+            navigate("/dashboard/enrolled-courses");
+            dispatch(resetCart());
+            toast.dismiss(toastId);
+            return;
+        }
+
+        const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+        if (!res) {
+            toast.error("RazorPay SDK failed to load");
+            return;
         }
 
         const RAZORPAY_KEY = import.meta.env.VITE_APP_RAZORPAY_KEY;

@@ -3,8 +3,9 @@ import { Link, matchPath, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import { NavbarLinks } from "../../../data/navbar-links"
-import { getAllCatalogNames, catalogData } from './../../data/catalogData';
 import { BRAND_NAME } from "../../config/brand";
+import { useCourseCategories } from "../../hooks/useCourseCategories";
+import { getCategoryHref } from "../../utils/catalogSlug";
 
 import ProfileDropDown from '../core/Auth/ProfileDropDown'
 import MobileProfileDropDown from '../core/Auth/MobileProfileDropDown'
@@ -22,11 +23,11 @@ const Navbar = () => {
     // console.log('USER data from Navbar (store) = ', user)
     const { totalItems } = useSelector((state) => state.cart)
     const location = useLocation();
+    const { categories } = useCourseCategories();
 
-    // Static catalog links
-    const catalogLinks = getAllCatalogNames().map((name) => ({
-        name: catalogData[name].pageTitle,
-        slug: name,
+    const catalogLinks = categories.map((category) => ({
+        name: category.name,
+        href: getCategoryHref(category, categories),
     }));
 
     // when user click Navbar link then it will hold yellow color
@@ -99,7 +100,7 @@ const Navbar = () => {
                                                     <>
                                                         {catalogLinks?.map((link, i) => (
                                                             <Link
-                                                                to={`/catalog/${link.slug}`}
+                                                                to={link.href}
                                                                 className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
                                                                 key={i}
                                                             >
