@@ -59,10 +59,10 @@ exports.sendOTP = async (req, res) => {
 
     catch (error) {
         console.log('Error while generating Otp - ', error);
-        res.status(200).json({
+        res.status(500).json({
             success: false,
-            message: 'Error while generating Otp',
-            error: error.mesage
+            message: error.message || 'Error while generating Otp',
+            error: error.message
         });
     }
 }
@@ -305,7 +305,7 @@ exports.changePassword = async (req, res) => {
             console.error("Error occurred while sending email:", error);
             return res.status(500).json({
                 success: false,
-                message: "Error occurred while sending email",
+                message: error.message || "Error occurred while sending email",
                 error: error.message,
             });
         }

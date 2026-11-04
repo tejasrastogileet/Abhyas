@@ -1,29 +1,66 @@
-const nodemailer = require('nodemailer');
+const BREVO_EMAIL_API_URL = 'https://api.brevo.com/v3/smtp/email';
+const REQUEST_TIMEOUT_MS = 10000;
 
 const mailSender = async (email, title, body) => {
+    const apiKey = process.env.BREVO_API_KEY;
+    const senderEmail = process.env.MAIL_FROM_EMAIL;
+
+    if (!apiKey || !senderEmail) {
+        throw new Error('Email service is not configured. Set BREVO_API_KEY and MAIL_FROM_EMAIL.');
+    }
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
     try {
-        const transporter = nodemailer.createTransport({
-            host: process.env.MAIL_HOST,
-            auth: {
-                user: process.env.MAIL_USER,
-                pass: process.env.MAIL_PASS
-            }
+        const response = await fetch(BREVO_EMAIL_API_URL, {
+            method: 'POST',
+            headers: {
+                'api-key': apiKey,
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                sender: { name: 'DevShala Learning', email: senderEmail },
+                to: [{ email }],
+                subject: title,
+                htmlContent: body
+            }),
+            signal: controller.signal
         });
 
-        const info = await transporter.sendMail({
-            from: 'DevShala Learning',
-            to: email,
-            subject: title,
-            html: body
-        });
+        const responseBody = await response.text();
+        let responseData = responseBody;
+        try {
+            responseData = responseBody ? JSON.parse(responseBody) : null;
+        } catch {
+            // Preserve a non-JSON response body for error reporting.
+        }
 
-        console.log('Info of sent mail - ', info);
-        return info;
+        if (!response.ok) {
+            console.error('Brevo email API request failed', {
+                status: response.status,
+                responseBody
+            });
+            const providerMessage = typeof responseData?.message === 'string'
+                ? responseData.message
+                : responseBody;
+            throw new Error(`Email delivery failed (HTTP ${response.status})${providerMessage ? `: ${providerMessage}` : ''}`);
+        }
+
+        return responseData;
+    } catch (error) {
+        if (error.name === 'AbortError') {
+            console.error('Brevo email API request timed out after 10 seconds');
+            throw new Error('Email delivery timed out. Please try again.');
+        }
+
+        if (!error.message?.startsWith('Email delivery failed')) {
+            console.error('Brevo email API request failed before receiving a response:', error.message);
+        }
+        throw error;
+    } finally {
+        clearTimeout(timeout);
     }
-    catch (error) {
-        console.error(error)
-        console.log('Error while sending mail (mailSender) - ', email);
-    }
-}
+};
 
 module.exports = mailSender;

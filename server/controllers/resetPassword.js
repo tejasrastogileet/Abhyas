@@ -48,7 +48,7 @@ exports.resetPasswordToken = async (req, res) => {
         res.status(500).json({
             success: false,
             error: error.message,
-            message: 'Error while creating token for reset password'
+            message: error.message || 'Error while creating token for reset password'
         })
     }
 }

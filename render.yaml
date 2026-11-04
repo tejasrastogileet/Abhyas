@@ -12,11 +12,7 @@ services:
         sync: false
       - key: JWT_SECRET
         sync: false
-      - key: MAIL_HOST
-        sync: false
-      - key: MAIL_USER
-        sync: false
-      - key: MAIL_PASS
+      - key: BREVO_API_KEY
         sync: false
       - key: MAIL_FROM_EMAIL
         value: tejasrastogi456@gmail.com

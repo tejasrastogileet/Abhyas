@@ -190,7 +190,7 @@ exports.sendPaymentSuccessEmail = async (req, res) => {
     }
     catch (error) {
         console.log("error in sending mail", error)
-        return res.status(500).json({ success: false, message: "Could not send email" })
+        return res.status(500).json({ success: false, message: error.message || "Could not send email" })
     }
 }
 

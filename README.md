@@ -52,7 +52,7 @@ This project demonstrates a production-style full-stack architecture with role-b
 - MongoDB with Mongoose
 - JWT Authentication
 - Cloudinary
-- Nodemailer
+- Brevo transactional email API
 - Razorpay
 
 ## System Architecture
@@ -62,7 +62,7 @@ Frontend (React + Vite)  --->  Backend API (Express + Node.js)  --->  MongoDB
                               |
                               +-- Cloudinary for media upload
                               +-- Razorpay for payment processing
-                              +-- Nodemailer for user communication
+                              +-- Brevo transactional email API for user communication
 ```
 
 ## Project Structure
@@ -140,9 +140,7 @@ Create a `.env` file in the `server` directory and configure the following varia
 PORT=5000
 DATABASE_URL=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
-MAIL_HOST=smtp.gmail.com
-MAIL_USER=your_email
-MAIL_PASS=your_email_password
+BREVO_API_KEY=your_brevo_api_key
 MAIL_FROM_EMAIL=your_sender_email
 CLOUD_NAME=your_cloudinary_cloud_name
 API_KEY=your_cloudinary_api_key
