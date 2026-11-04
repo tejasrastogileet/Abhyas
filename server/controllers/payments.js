@@ -25,7 +25,7 @@ exports.capturePayment = async (req, res) => {
     const userId = req.user.id;
 
 
-    if (coursesId.length === 0) {
+    if (!Array.isArray(coursesId) || coursesId.length === 0) {
         return res.json({ success: false, message: "Please provide Course Id" });
     }
 
@@ -54,7 +54,16 @@ exports.capturePayment = async (req, res) => {
         }
     }
 
-    // create order
+    if (totalAmount === 0) {
+        try {
+            await enrollStudents(coursesId, userId);
+            return res.status(200).json({ success: true, message: { free: true } });
+        } catch (error) {
+            return res.status(500).json({ success: false, message: error.message });
+        }
+    }
+
+    // create order for paid courses
     const currency = "INR";
     const options = {
         amount: totalAmount * 100,
@@ -95,15 +104,17 @@ exports.verifyPayment = async (req, res) => {
 
     let body = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSignature = crypto
-        .createHmac("sha256", process.env.RAZORPAY_SECRET)
+        .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
         .update(body.toString())
         .digest("hex");
 
     if (expectedSignature === razorpay_signature) {
-        //enroll student
-        await enrollStudents(courses, userId, res);
-        //return res
-        return res.status(200).json({ success: true, message: "Payment Verified" });
+        try {
+            await enrollStudents(courses, userId);
+            return res.status(200).json({ success: true, message: "Payment Verified" });
+        } catch (error) {
+            return res.status(500).json({ success: false, message: error.message });
+        }
     }
     return res.status(200).json({ success: "false", message: "Payment Failed" });
 
@@ -111,61 +122,33 @@ exports.verifyPayment = async (req, res) => {
 
 
 // ================ enroll Students to course after payment ================
-const enrollStudents = async (courses, userId, res) => {
-
-    if (!courses || !userId) {
-        return res.status(400).json({ success: false, message: "Please Provide data for Courses or UserId" });
-    }
-
+const enrollStudents = async (courses, userId) => {
+    if (!Array.isArray(courses) || !userId) throw new Error("Please provide courses and user ID.");
     for (const courseId of courses) {
-        try {
-            //find the course and enroll the student in it
-            const enrolledCourse = await Course.findOneAndUpdate(
-                { _id: courseId },
-                { $push: { studentsEnrolled: userId } },
-                { new: true },
-            )
+        const enrolledCourse = await Course.findOne({ _id: courseId, status: 'Published' });
+        if (!enrolledCourse) throw new Error("Published course not found.");
 
-            if (!enrolledCourse) {
-                return res.status(500).json({ success: false, message: "Course not Found" });
-            }
-            // console.log("Updated course: ", enrolledCourse)
+        const wasEnrolled = enrolledCourse.studentsEnrolled.some((id) => id.toString() === userId.toString());
+        await Course.updateOne({ _id: courseId }, { $addToSet: { studentsEnrolled: userId } });
 
-            // Initialize course preogres with 0 percent
-            const courseProgress = await CourseProgress.create({
-                courseID: courseId,
-                userId: userId,
-                completedVideos: [],
-            })
+        let progress = await CourseProgress.findOne({ courseID: courseId, userId });
+        if (!progress) {
+            progress = await CourseProgress.create({ courseID: courseId, userId, completedVideos: [] });
+        }
+        const enrolledStudent = await User.findByIdAndUpdate(
+            userId,
+            { $addToSet: { courses: courseId, courseProgress: progress._id } },
+            { new: true }
+        );
 
-            // Find the student and add the course to their list of enrolled courses
-            const enrolledStudent = await User.findByIdAndUpdate(
-                userId,
-                {
-                    $push: {
-                        courses: courseId,
-                        courseProgress: courseProgress._id,
-                    },
-                },
-                { new: true }
-            )
-
-            // console.log("Enrolled student: ", enrolledStudent)
-
-            // Send an email notification to the enrolled student
-            const emailResponse = await mailSender(
+        if (!wasEnrolled && enrolledStudent) {
+            mailSender(
                 enrolledStudent.email,
                 `${BRAND_NAME}: Successfully Enrolled into ${enrolledCourse.courseName}`,
-                courseEnrollmentEmail(enrolledCourse.courseName, `${enrolledStudent.firstName}`)
-            )
-            // console.log("Email Sent Successfully", emailResponse);
-        }
-        catch (error) {
-            console.log(error);
-            return res.status(500).json({ success: false, message: error.message });
+                courseEnrollmentEmail(enrolledCourse.courseName, enrolledStudent.firstName)
+            ).catch((error) => console.error('Enrollment email failed:', error.message));
         }
     }
-
 }
 
 
@@ -182,16 +165,17 @@ exports.sendPaymentSuccessEmail = async (req, res) => {
     try {
         // find student
         const enrolledStudent = await User.findById(userId);
-        await mailSender(
+        const email = mailSender(
             enrolledStudent.email,
             `${BRAND_NAME}: Payment Received`,
-            paymentSuccessEmail(`${enrolledStudent.firstName}`,
-                amount / 100, orderId, paymentId)
-        )
+            `<p>Hi ${enrolledStudent.firstName},</p><p>Your payment of ${amount / 100} was received.</p><p>Order: ${orderId}<br>Payment: ${paymentId}</p>`
+        );
+        email.catch((error) => console.error('Payment email failed:', error.message));
+        return res.status(200).json({ success: true, message: 'Payment email queued.' });
     }
     catch (error) {
-        console.log("error in sending mail", error)
-        return res.status(500).json({ success: false, message: error.message || "Could not send email" })
+        console.error("Could not prepare payment email:", error.message);
+        return res.status(200).json({ success: true, message: 'Payment completed.' });
     }
 }
 

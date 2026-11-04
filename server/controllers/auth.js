@@ -304,11 +304,6 @@ exports.changePassword = async (req, res) => {
         }
         catch (error) {
             console.error("Error occurred while sending email:", error);
-            return res.status(500).json({
-                success: false,
-                message: error.message || "Error occurred while sending email",
-                error: error.message,
-            });
         }
 
 

@@ -34,7 +34,8 @@ exports.resetPasswordToken = async (req, res) => {
         const url = `https://devshala.vercel.app/update-password/${token}`;
 
         // send email containing url
-        await mailSender(email, `${BRAND_NAME} Password Reset Link`, `Reset your password on ${BRAND_NAME}: ${url}`);
+        mailSender(email, `${BRAND_NAME} Password Reset Link`, `Reset your password on ${BRAND_NAME}: ${url}`)
+            .catch((error) => console.error('Password reset email failed:', error.message));
 
         // return succes response
         res.status(200).json({

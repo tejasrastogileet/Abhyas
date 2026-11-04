@@ -46,6 +46,10 @@ app.use(
 
 const PORT: string | number = process.env.PORT || 5000;
 
+app.get('/health', (_req: Request, res: Response) => {
+    res.status(200).json({ status: 'ok' });
+});
+
 app.listen(PORT, () => {
     console.log(`Server Started on PORT ${PORT}`);
 });
