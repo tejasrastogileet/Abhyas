@@ -2,6 +2,7 @@ const User = require('../models/user');
 const mailSender = require('../utils/mailSender');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
+const { BRAND_NAME } = require('../config/brand');
 
 // ================ resetPasswordToken ================
 exports.resetPasswordToken = async (req, res) => {
@@ -33,7 +34,7 @@ exports.resetPasswordToken = async (req, res) => {
         const url = `https://devshala.vercel.app/update-password/${token}`;
 
         // send email containing url
-        await mailSender(email, 'Password Reset Link', `Password Reset Link : ${url}`);
+        await mailSender(email, `${BRAND_NAME} Password Reset Link`, `Reset your password on ${BRAND_NAME}: ${url}`);
 
         // return succes response
         res.status(200).json({

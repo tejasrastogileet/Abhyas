@@ -35,6 +35,9 @@ import VideoDetails from './components/core/ViewCourse/VideoDetails';
 
 import { ACCOUNT_TYPE } from './utils/constants';
 import { HiArrowNarrowUp } from "react-icons/hi"
+import { getCatalogData } from "./data/catalogData";
+import { usePageSeo } from "./hooks/usePageSeo";
+import { BRAND_NAME, TAGLINE } from "./config/brand";
 
 interface RootState {
   profile: {
@@ -49,6 +52,25 @@ const App: FC = () => {
 
   // Scroll to the top of the page when the component mounts
   const location = useLocation();
+  const catalogMatch = location.pathname.match(/^\/catalog\/([^/]+)\/?$/);
+  const catalogData = catalogMatch ? getCatalogData(decodeURIComponent(catalogMatch[1])) : null;
+  const isPrivateRoute = /^\/(login|signup|forgot-password|verify-email|update-password|dashboard|view-course)(\/|$)/.test(location.pathname);
+  const isCourseRoute = /^\/courses\/[^/]+\/?$/.test(location.pathname);
+  const pageSeo = catalogMatch
+    ? catalogData
+      ? { title: catalogData.pageTitle, description: catalogData.description }
+      : { title: "Page Not Found", description: "The requested course catalog could not be found.", noIndex: true }
+    : location.pathname === "/"
+      ? { title: TAGLINE, description: `Learn web development, programming, DevOps, machine learning, and more with practical online courses from ${BRAND_NAME}.` }
+      : location.pathname === "/about"
+        ? { title: `About ${BRAND_NAME}`, description: `Discover ${BRAND_NAME}'s mission to make practical, flexible online technology education accessible to every learner.` }
+        : location.pathname === "/contact"
+          ? { title: `Contact ${BRAND_NAME}`, description: `Get in touch with the ${BRAND_NAME} team about courses, learning support, or instructor opportunities.` }
+          : isCourseRoute
+            ? { title: "Online Course Details", description: `Explore course lessons, learning outcomes, instructor details, and reviews on ${BRAND_NAME}.` }
+            : { title: "Page Not Found", description: `The requested page could not be found on ${BRAND_NAME}.`, noIndex: true };
+  usePageSeo({ ...pageSeo, noIndex: isPrivateRoute || pageSeo.noIndex });
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname])

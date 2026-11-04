@@ -1,10 +1,12 @@
+import { BRAND_NAME, TAGLINE } from '../../config/brand';
+
 export const courseEnrollmentEmail = (courseName: string, name: string): string => {
     return `<!DOCTYPE html>
     <html>
     
     <head>
         <meta charset="UTF-8">
-        <title>Course Registration Confirmation</title>
+        <title>${BRAND_NAME} Course Registration Confirmation</title>
         <style>
             body {
                 background-color: #ffffff;
@@ -67,19 +69,21 @@ export const courseEnrollmentEmail = (courseName: string, name: string): string 
     
     <body>
         <div class="container">
-            <a href=""><img class="logo" src="https://i.ibb.co/NNSF74W/Logo-Full-Dark.png"
-                    alt="DevShala Logo"></a>
+                <a href=""><img class="logo" src="https://devs-olive.vercel.app/assets/logo-full.svg"
+                    alt="${BRAND_NAME} logo"></a>
             <div class="message">Course Registration Confirmation</div>
             <div class="body">
                 <p>Dear ${name},</p>
                 <p>You have successfully registered for the course <span class="highlight">"${courseName}"</span>. We
                     are excited to have you as a participant!</p>
+                <p>Thank you for practicing with ${BRAND_NAME}.</p>
                 <p>Please log in to your learning dashboard to access the course materials and start your learning journey.
                 </p>
                 <a class="cta" href="https://devshala.vercel.app/dashboard/enrolled-courses">Go to Dashboard</a>
             </div>
             <div class="support">If you have any questions or need assistance, please feel free to reach out to us at 
             <a href="mailto:tejasrastogi456@gmail.com">tejasrastogi456@gmail.com</a>. We are here to help!</div>
+            <div class="support">© 2026 ${BRAND_NAME} · ${TAGLINE}</div>
         </div>
     </body>
     

@@ -23,6 +23,14 @@ import { GiReturnArrow } from 'react-icons/gi'
 import { MdOutlineVerified } from 'react-icons/md'
 import Img from './../components/common/Img';
 import toast from "react-hot-toast"
+import { usePageSeo } from "../hooks/usePageSeo";
+import { BRAND_NAME } from "../config/brand";
+
+interface CourseSeoData {
+  courseName?: string;
+  courseDescription?: string;
+  thumbnail?: string;
+}
 
 
 
@@ -42,7 +50,13 @@ function CourseDetails() {
 
   // Declear a state to save the course details
   const [response, setResponse] = useState(null)
+  const [courseSeo, setCourseSeo] = useState<CourseSeoData | null>(null)
   const [confirmationModal, setConfirmationModal] = useState(null)
+  usePageSeo({
+    title: courseSeo?.courseName || "Online Course Details",
+    description: courseSeo?.courseDescription || `Explore course lessons, learning outcomes, instructor details, and reviews on ${BRAND_NAME}.`,
+    image: courseSeo?.thumbnail || "/assets/logo-full.svg",
+  });
 
   useEffect(() => {
     // Calling fetchCourseDetails fucntion to fetch the details
@@ -51,6 +65,7 @@ function CourseDetails() {
         const res = await fetchCourseDetails(courseId)
         // console.log("course details res: ", res)
         setResponse(res)
+        setCourseSeo(res?.data?.courseDetails || null)
       } catch (error) {
         console.log("Could not fetch Course Details")
       }

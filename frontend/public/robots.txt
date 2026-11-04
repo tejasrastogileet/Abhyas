@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://devs-olive.vercel.app/sitemap.xml

@@ -3,6 +3,7 @@ const instance = require('../config/rajorpay');
 const crypto = require('crypto');
 const mailSender = require('../utils/mailSender');
 const { courseEnrollmentEmail } = require('../mail/templates/courseEnrollmentEmail');
+const { BRAND_NAME } = require('../config/brand');
 require('dotenv').config();
 
 const User = require('../models/user');
@@ -154,7 +155,7 @@ const enrollStudents = async (courses, userId, res) => {
             // Send an email notification to the enrolled student
             const emailResponse = await mailSender(
                 enrolledStudent.email,
-                `Successfully Enrolled into ${enrolledCourse.courseName}`,
+                `${BRAND_NAME}: Successfully Enrolled into ${enrolledCourse.courseName}`,
                 courseEnrollmentEmail(enrolledCourse.courseName, `${enrolledStudent.firstName}`)
             )
             // console.log("Email Sent Successfully", emailResponse);
@@ -183,7 +184,7 @@ exports.sendPaymentSuccessEmail = async (req, res) => {
         const enrolledStudent = await User.findById(userId);
         await mailSender(
             enrolledStudent.email,
-            `Payment Recieved`,
+            `${BRAND_NAME}: Payment Received`,
             paymentSuccessEmail(`${enrolledStudent.firstName}`,
                 amount / 100, orderId, paymentId)
         )

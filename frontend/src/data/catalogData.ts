@@ -1,4 +1,5 @@
 // Static catalog data for all catalog pages
+import { BRAND_NAME } from "../config/brand";
 
 export interface CatalogCourse {
   id: string
@@ -33,7 +34,7 @@ export const catalogData: Record<string, CatalogPageData> = {
         price: "Free",
         rating: 4,
         ratingCount: 1,
-        instructor: "DevShala Team",
+        instructor: `${BRAND_NAME} Team`,
         thumbnail: PLACEHOLDER_IMAGE,
       },
       {

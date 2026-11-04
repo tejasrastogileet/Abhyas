@@ -1,4 +1,4 @@
-# DevShala
+# Abhyas
 
 <div align="center">
 
@@ -16,7 +16,7 @@ Live Demo: https://devs-olive.vercel.app/
 
 ## Overview
 
-DevShala is a complete e-learning platform built to simplify online education for both students and instructors. The platform allows instructors to create and manage courses, upload learning content, and deliver a polished experience to learners. Students can browse available courses, view detailed lesson modules, enroll through secure payment flows, and track their learning progress.
+Abhyas is a complete e-learning platform built to simplify online education for both students and instructors. The platform allows instructors to create and manage courses, upload learning content, and deliver a polished experience to learners. Students can browse available courses, view detailed lesson modules, enroll through secure payment flows, and track their learning progress.
 
 This project demonstrates a production-style full-stack architecture with role-based access control, secure authentication, media handling, and integrations for real-world digital commerce.
 
@@ -68,7 +68,7 @@ Frontend (React + Vite)  --->  Backend API (Express + Node.js)  --->  MongoDB
 ## Project Structure
 
 ```text
-Devshala/
+Abhyas/
 ├── frontend/
 │   ├── public/
 │   ├── src/
@@ -155,13 +155,29 @@ For the frontend, configure the API base URL if needed:
 VITE_API_BASE_URL=http://localhost:5000
 ```
 
+## Demo Accounts and Seeding
+
+From the `server` directory, set `DATABASE_URL` in `.env` and run:
+
+```bash
+npm run seed
+```
+
+The seed is safe to rerun: categories, accounts, courses, course content, and reviews are upserted rather than duplicated.
+
+| Role | Email | Password |
+| --- | --- | --- |
+| Admin | `admin@abhyas.demo` | `AbhyasAdmin!2026` |
+| Instructor | `instructor@abhyas.demo` | `AbhyasInstructor!2026` |
+| Student | `student@abhyas.demo` | `AbhyasStudent!2026` |
+
 ## Installation and Setup
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/tejasrastogileet/Devshala.git
-cd Devshala
+git clone https://github.com/tejasrastogileet/Devshala.git Abhyas
+cd Abhyas
 ```
 
 ### 2. Install frontend dependencies
@@ -202,7 +218,7 @@ The project is configured for deployment using Render with separate web services
 
 ## Why This Project Stands Out
 
-DevShala is more than a simple course marketplace. It demonstrates:
+Abhyas is more than a simple course marketplace. It demonstrates:
 
 - Full-stack application design
 - Role-based access control and secure session management

@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: devshala-server
+    name: abhyas-server
     runtime: node
     rootDir: server
     buildCommand: npm ci && npm run build
@@ -28,7 +28,7 @@ services:
         sync: false
 
   - type: web
-    name: devshala-frontend
+    name: abhyas-frontend
     runtime: node
     rootDir: frontend
     buildCommand: npm install && npm run build

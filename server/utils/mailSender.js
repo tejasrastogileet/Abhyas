@@ -1,5 +1,6 @@
 const BREVO_EMAIL_API_URL = 'https://api.brevo.com/v3/smtp/email';
 const REQUEST_TIMEOUT_MS = 10000;
+const { BRAND_NAME } = require('../config/brand');
 
 const mailSender = async (email, title, body) => {
     const apiKey = process.env.BREVO_API_KEY;
@@ -20,7 +21,7 @@ const mailSender = async (email, title, body) => {
                 'content-type': 'application/json'
             },
             body: JSON.stringify({
-                sender: { name: 'DevShala Learning', email: senderEmail },
+                sender: { name: BRAND_NAME, email: senderEmail },
                 to: [{ email }],
                 subject: title,
                 htmlContent: body

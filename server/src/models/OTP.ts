@@ -1,5 +1,6 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import mailSender from '../utils/mailSender';
+import { BRAND_NAME } from '../config/brand';
 
 interface IOTP extends Document {
     email: string;
@@ -29,7 +30,7 @@ const OTPSchema = new Schema<IOTP>(
 // Function to send email
 async function sendVerificationEmail(email: string, otp: string): Promise<void> {
     try {
-        await mailSender(email, 'Verification Email from DevShala', otp);
+        await mailSender(email, `Verification Email from ${BRAND_NAME}`, otp);
         console.log('Email sent successfully to - ', email);
     } catch (error) {
         console.error('Error while sending an email to ', email);

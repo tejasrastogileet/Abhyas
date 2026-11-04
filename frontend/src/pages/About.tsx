@@ -13,6 +13,7 @@ import StatsComponenet from "../components/core/AboutPage/Stats"
 import HighlightText from "../components/core/HomePage/HighlightText"
 import Img from "../components/common/Img"
 import ReviewSlider from './../components/common/ReviewSlider';
+import { BRAND_NAME } from "../config/brand";
 
 import { motion } from 'framer-motion';
 import { fadeIn } from "../components/common/motionFrameVarients"
@@ -44,7 +45,7 @@ const About = () => {
               whileInView={'show'}
               viewport={{ once: false, amount: 0.1 }}
               className="mx-auto mt-3 text-center text-base font-medium text-richblack-300 lg:w-[95%]">
-              DevShala is at the forefront of driving innovation in online
+              {BRAND_NAME} is at the forefront of driving innovation in online
               education. We're passionate about creating a brighter future by
               offering cutting-edge courses, leveraging emerging technologies,
               and nurturing a vibrant learning community.

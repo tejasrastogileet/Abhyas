@@ -1,10 +1,11 @@
 {
-  "name": "backend",
+  "name": "abhyas-backend",
   "version": "1.0.0",
   "main": "dist/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/server.js",
+    "seed": "node scripts/seed.js",
     "dev": "nodemon --exec ts-node src/server.ts",
     "build": "tsc",
     "build:watch": "tsc --watch"

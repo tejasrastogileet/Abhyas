@@ -10,6 +10,7 @@ const cookie = require('cookie');
 const mailSender = require('../utils/mailSender');
 const otpTemplate = require('../mail/templates/emailVerificationTemplate');
 const { passwordUpdated } = require("../mail/templates/passwordUpdate");
+const { BRAND_NAME } = require('../config/brand');
 
 // ================ SEND-OTP For Email Verification ================
 exports.sendOTP = async (req, res) => {
@@ -41,7 +42,7 @@ exports.sendOTP = async (req, res) => {
         console.log(name);
 
         // send otp in mail
-        await mailSender(email, 'OTP Verification Email', otpTemplate(otp, name));
+        await mailSender(email, `${BRAND_NAME} OTP Verification`, otpTemplate(otp, name));
 
         // create an entry for otp in DB
         const otpBody = await OTP.create({ email, otp });
@@ -293,7 +294,7 @@ exports.changePassword = async (req, res) => {
         try {
             const emailResponse = await mailSender(
                 updatedUserDetails.email,
-                'Password for your account has been updated',
+                `${BRAND_NAME}: Password updated`,
                 passwordUpdated(
                     updatedUserDetails.email,
                     `Password updated successfully for ${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`

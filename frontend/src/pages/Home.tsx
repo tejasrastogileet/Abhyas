@@ -21,6 +21,7 @@ import { FaArrowRight } from "react-icons/fa";
 
 import { motion } from "framer-motion";
 import { fadeIn } from "./../components/common/motionFrameVarients";
+import { BRAND_NAME } from "../config/brand";
 
 // background random images
 import backgroundImg1 from "../assets/Images/random bg img/coding bg1.jpg";
@@ -256,9 +257,8 @@ const Home = () => {
 
               <div className="flex flex-col gap-10 w-full lg:w-[40%] items-start">
                 <div className="text-[16px]">
-                  The modern DevShala is the dictates its own terms. Today, to
-                  be a competitive specialist requires more than professional
-                  skills.
+                  {BRAND_NAME} makes learning a daily practice. Today, becoming
+                  a competitive specialist takes more than professional skills.
                 </div>
                 <CTAButton active={true} linkto={"/signup"}>
                   <div>Learn more</div>

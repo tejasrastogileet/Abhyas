@@ -1,4 +1,5 @@
 const { eventNames } = require("../../models/section");
+const { BRAND_NAME, TAGLINE } = require("../../config/brand");
 
 
 const otpTemplate = (otp, name) => {
@@ -7,7 +8,7 @@ const otpTemplate = (otp, name) => {
 	
 	<head>
 		<meta charset="UTF-8">
-		<title>OTP Verification Email</title>
+		<title>${BRAND_NAME} OTP Verification Email</title>
 		<style>
 			body {
 				background-color: #ffffff;
@@ -70,11 +71,11 @@ const otpTemplate = (otp, name) => {
 	<body>
 		<div class="container">
 			<a href=""><img class="logo"
-					src="https://i.ibb.co/NNSF74W/Logo-Full-Dark.png" alt="DevShala Logo"></a>
+					src="https://devs-olive.vercel.app/assets/logo-full.svg" alt="${BRAND_NAME} logo"></a>
 			<div class="message">OTP Verification Email</div>
 			<div class="body">
 				<p>Dear ${name}</p>
-				<p>Thank you for registering with DevShala. To complete your registration, please use the following OTP
+				<p>Thank you for registering with ${BRAND_NAME}. To complete your registration, please use the following OTP
 					(One-Time Password) to verify your account:</p>
 				<h2 class="highlight">${otp}</h2>
 				<p>This OTP is valid for 3 minutes. If you did not request this verification, please disregard this email.
@@ -82,6 +83,7 @@ const otpTemplate = (otp, name) => {
 			</div>
 			<div class="support">If you have any questions or need assistance, please feel free to reach out to us at <a
 									href="mailto:tejasrastogi456@gmail.com">tejasrastogi456@gmail.com</a>. We are here to help!</div>
+			<div class="support">© 2026 ${BRAND_NAME} · ${TAGLINE}</div>
 		</div>
 	</body>
 	

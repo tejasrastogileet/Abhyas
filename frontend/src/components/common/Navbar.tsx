@@ -3,8 +3,8 @@ import { Link, matchPath, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import { NavbarLinks } from "../../../data/navbar-links"
-import devshalaIcon from '../../assets/Logo/devshala-icon.svg'
 import { getAllCatalogNames, catalogData } from './../../data/catalogData';
+import { BRAND_NAME } from "../../config/brand";
 
 import ProfileDropDown from '../core/Auth/ProfileDropDown'
 import MobileProfileDropDown from '../core/Auth/MobileProfileDropDown'
@@ -68,9 +68,9 @@ const Navbar = () => {
             <div className='flex w-11/12 max-w-maxContent items-center justify-between '>
                 {/* logo */}
                 <div className='flex items-center gap-2 font-bold text-lg'>
-                <Link to="/" className='flex items-center gap-2'>
-                    <img src={devshalaIcon} alt="DevShala Logo" width={45} height={45} loading='lazy' />
-                    <span className='hidden sm:block text-richblack-25 font-bold text-lg'>DevShala</span>
+                <Link to="/" className='flex items-center gap-2' aria-label={`${BRAND_NAME} home`}>
+                    <img src="/assets/logo-mark.svg" alt={`${BRAND_NAME} logo`} width={45} height={45} />
+                    <span className='hidden sm:block text-richblack-25 font-bold text-lg'>{BRAND_NAME}</span>
                 </Link>
                 </div>
 

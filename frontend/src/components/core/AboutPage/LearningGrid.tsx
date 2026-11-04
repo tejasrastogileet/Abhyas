@@ -1,6 +1,7 @@
 import React from "react";
 import HighlightText from "../../../components/core/HomePage/HighlightText";
 import CTAButton from "../../../components/core/HomePage/Button";
+import { BRAND_NAME } from "../../../config/brand";
 
 const LearningGridArray = [
   {
@@ -8,7 +9,7 @@ const LearningGridArray = [
     heading: "World-Class Learning for",
     highlightText: "Anyone, Anywhere",
     description:
-      "DevShala partners with more than 275+ leading universities and companies to bring flexible, affordable, job-relevant online learning to individuals and organizations worldwide.",
+      `${BRAND_NAME} brings flexible, affordable, job-relevant online learning to individuals and organizations worldwide.`,
     BtnText: "Learn More",
     BtnLink: "/",
   },
@@ -22,25 +23,25 @@ const LearningGridArray = [
     order: 2,
     heading: "Our Learning Methods",
     description:
-      "DevShala partners with more than 275+ leading universities and companies to bring",
+      `${BRAND_NAME} helps learners build practical skills through structured lessons and hands-on practice.`,
   },
   {
     order: 3,
     heading: "Certification",
     description:
-      "DevShala partners with more than 275+ leading universities and companies to bring",
+      `${BRAND_NAME} helps learners build practical skills through structured lessons and hands-on practice.`,
   },
   {
     order: 4,
     heading: `Rating "Auto-grading"`,
     description:
-      "DevShala partners with more than 275+ leading universities and companies to bring",
+      `${BRAND_NAME} helps learners build practical skills through structured lessons and hands-on practice.`,
   },
   {
     order: 5,
     heading: "Ready to Work",
     description:
-      "DevShala partners with more than 275+ leading universities and companies to bring",
+      `${BRAND_NAME} helps learners build practical skills through structured lessons and hands-on practice.`,
   },
 ];
 

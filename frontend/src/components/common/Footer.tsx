@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { ImGithub, ImLinkedin2 } from "react-icons/im";
 
 // Images
-import DevShalaLogo from "../../assets/Logo/devshala-logo.svg";
+import { BRAND_NAME, TAGLINE } from "../../config/brand";
 
 // footer data
 const BottomFooter = ["Privacy Policy", "Cookie Policy", "Terms"];
@@ -31,12 +31,13 @@ const Footer = () => {
             <div className="w-[30%] flex flex-col gap-3 lg:w-[30%] mb-7 lg:pl-0">
               <div className="flex flex-row items-center gap-2">
                 <img
-                  src={DevShalaLogo}
-                  alt="DevShala Logo"
+                  src="/assets/logo-mark.svg"
+                  alt={`${BRAND_NAME} logo`}
                   className="object-contain h-[50px] w-[50px]"
                 />
-                <span className="text-richblack-50 font-semibold text-lg">DevShala</span>
+                <span className="text-richblack-50 font-semibold text-lg">{BRAND_NAME}</span>
               </div>
+              <p className="text-sm text-richblack-200">{TAGLINE}</p>
               <h1 className="text-richblack-50 font-semibold text-[16px]">
                 Company
               </h1>
@@ -243,7 +244,7 @@ const Footer = () => {
           </div>
 
           <div className="text-center flex flex-col sm:flex-row ">
-            <span> Made with ❤️ by Tejas Rastogi © 2026 DevShala</span>
+            <span> Made with ❤️ by Tejas Rastogi © 2026 {BRAND_NAME}</span>
           </div>
 
           <div className="flex items-center">

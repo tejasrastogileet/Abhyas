@@ -1,7 +1,7 @@
 import { toast } from "react-hot-toast";
 import { studentEndpoints } from "../apis";
 import { apiConnector } from "../apiConnector";
-import devshalaLogo from "../../assets/Logo/devshala-logo.svg"
+import { BRAND_NAME } from "../../config/brand"
 import { setPaymentLoading } from "../../slices/courseSlice";
 import { resetCart } from "../../slices/cartSlice";
 
@@ -56,9 +56,9 @@ export async function buyCourse(token, coursesId, userDetails, navigate, dispatc
             currency: orderResponse.data.message.currency,
             amount: orderResponse.data.message.amount,
             order_id: orderResponse.data.message.id,
-            name: "DevShala",
+            name: BRAND_NAME,
             description: "Thank You for Purchasing the Course",
-            image: devshalaLogo,
+            image: `${window.location.origin}/assets/logo-full.svg`,
             prefill: {
                 name: userDetails.firstName,
                 email: userDetails.email
