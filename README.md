@@ -181,7 +181,7 @@ Course thumbnails are written to `frontend/public/thumbnails`. Set `FRONTEND_URL
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/tejasrastogileet/Devshala.git Abhyas
+git clone https://github.com/tejasrastogileet/Abhyas.git
 cd Abhyas
 ```
 
