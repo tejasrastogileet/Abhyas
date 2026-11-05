@@ -12,7 +12,7 @@
 
 A modern full-stack online learning platform that connects learners with instructors and enables smooth course discovery, enrollment, and progress tracking.
 
-Live Demo: https://devs-olive.vercel.app/
+Live Demo: https://abhyasapp.vercel.app/
 
 ## Overview
 
