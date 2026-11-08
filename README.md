@@ -250,7 +250,7 @@ This project is available for educational and portfolio use.
 For project-related discussions or collaboration opportunities:
 
 - GitHub: https://github.com/tejasrastogileet
-- Live Demo: https://devs-olive.vercel.app/
+- Live Demo: https://abhyasapp.vercel.app/
 
 ## Acknowledgements
 
